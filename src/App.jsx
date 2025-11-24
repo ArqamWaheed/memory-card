@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 function App() {
   const [src, setSrc] = useState(null);
   useEffect(() => {
-    fetch("https://api.giphy.com/v1/gifs/search?api_key=9DJ3r9jvTt5JDGWaee7k3T1Hg2SO8xtk&q=OnePieceLuffy", {
+    fetch("https://api.giphy.com/v1/stickers/search?api_key=9DJ3r9jvTt5JDGWaee7k3T1Hg2SO8xtk&q=WhiteBeard", {
       mode: "cors",
     })
       .then((response) => {
@@ -12,7 +12,6 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setSrc(data.data[0].images.original_still.url);
       })
       .catch((error) => {
@@ -23,7 +22,7 @@ function App() {
 
   return (
     <>
-    <img src={src} alt="test" />
+      {src !== null ? <img src={src} alt="test" /> : null};
     </>
   )
 }
