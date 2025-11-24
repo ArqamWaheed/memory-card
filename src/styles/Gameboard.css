@@ -1,0 +1,28 @@
+.Gameboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.characterCard {
+    background: var(--gradient);
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--highlight);
+    border-radius: 50%;
+    width: 400px;
+    padding: 50px;
+    aspect-ratio: 1/1;
+    display: flex;
+    transition: transform 0.1s ease-in;
+}
+
+.characterCard:hover {
+    background: var(--gradient-hover);
+    transform: translate(2px, -2px);
+    cursor: pointer;
+}
+
+.characterCard img {
+    border-radius: 50%;
+}
