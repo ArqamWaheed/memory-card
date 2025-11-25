@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Character from './Character';
-
+import ScoreCounter from './ScoreCounter';
 
 function shuffleArray(array = ["Whitebeard", "Luffy", "Zoro", "Sanji", "TrafalgarLaw", "Mihawk", "Usopp", "Doflamingo", "NicoRobin", "Franky"]) {
   const shuffledArray = [...array]; 
@@ -13,7 +13,6 @@ function shuffleArray(array = ["Whitebeard", "Luffy", "Zoro", "Sanji", "Trafalga
 
 function Gameboard() {
     const [ArrCharacters] = useState(() => shuffleArray()); 
-    const [isClicked, setIsClicked] = useState(false);
     const [keys] = useState(() => {
         const keys = [];
         for (let i = 0; i < 10; i++) {
@@ -35,16 +34,24 @@ function Gameboard() {
     }
 
 
-    function handleImgClick() {
-        setIsClicked(!isClicked);
+    function handleImgClick(isClicked) {
+        if (isClicked == true) {
+            console.log("Wtf");
+        }
         shuffleCharactersDOM();
     }
+
+    function incrementScore(cb) {
+        cb();
+    }
+
     
     return (
     <div className='Gameboard'>
         {ArrCharacters.map((character, index) => (
             <Character character={null} index={index} key={keys[index]} handleImgClick={handleImgClick}></Character>
         ))}
+        <ScoreCounter key={0} incrementScore={incrementScore}></ScoreCounter>
     </div>
     )
 }
