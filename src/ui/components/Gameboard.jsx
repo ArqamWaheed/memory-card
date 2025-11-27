@@ -28,6 +28,7 @@ function Gameboard() {
     const [charClickedStatus, setCharClickedStatus] = useState(charClickedArr);
     const [score, setScore] = useState(0);
     const [loadedCount, setLoadedCount] = useState(0);
+    const [gameState, setGameState] = useState(null); // null, 'won', 'lost'
     const isLoading = loadedCount < 10;
 
     function handleImageLoaded() {
@@ -49,21 +50,29 @@ function Gameboard() {
     function handleImgClick(node) {
         const index = parseInt(node.dataset.index);
         if (charClickedStatus[index] == false) {
-            setCharClickedStatus((prev) => {
-                const newStatus = [...prev];
-                newStatus[index] = true;
-                return newStatus;
-            });
-            incrementScore(score);
+            const newClickedStatus = [...charClickedStatus];
+            newClickedStatus[index] = true;
+            setCharClickedStatus(newClickedStatus);
+            
+            const newScore = score + 1;
+            setScore(newScore);
+            
+            // Check if won (all 10 clicked)
+            if (newScore === 10) {
+                setGameState('won');
+            }
         } else {
-            setScore(0);
-            setCharClickedStatus(charClickedArr);
+            // Lost - clicked same character twice
+            setGameState('lost');
         }
         shuffleCharactersDOM();
     }
 
-    function incrementScore(score) {
-        setScore(score + 1);
+    function restartGame() {
+        setScore(0);
+        setCharClickedStatus(charClickedArr.map(() => false));
+        setGameState(null);
+        shuffleCharactersDOM();
     }
 
     return (
@@ -72,9 +81,30 @@ function Gameboard() {
                 <h1>Memory Card Game</h1>
                 <p>MAKE SURE TO NOT SELECT THE SAME CHARACTER TWICE!</p>
             </div>
-            <ScoreCounter key={0} score={score} setScore={incrementScore}></ScoreCounter>
+            <ScoreCounter key={0} score={score}></ScoreCounter>
             
             {isLoading && <div className="loading">Loading characters... {loadedCount}/10</div>}
+            
+            {gameState === 'won' && (
+                <div className="popup-overlay">
+                    <div className="popup">
+                        <h2>🎉 YOU WON! 🎉</h2>
+                        <p>You remembered all 10 characters!</p>
+                        <button onClick={restartGame}>Play Again</button>
+                    </div>
+                </div>
+            )}
+            
+            {gameState === 'lost' && (
+                <div className="popup-overlay">
+                    <div className="popup">
+                        <h2>💥 GAME OVER 💥</h2>
+                        <p>You clicked the same character twice!</p>
+                        <p>Final Score: {score}</p>
+                        <button onClick={restartGame}>Try Again</button>
+                    </div>
+                </div>
+            )}
             
             <div className='CharactersDiv' style={{ display: isLoading ? 'none' : 'flex' }}>    
                 {ArrCharacters.map((character, index) => (
