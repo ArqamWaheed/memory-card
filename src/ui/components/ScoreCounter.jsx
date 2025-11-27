@@ -1,10 +1,6 @@
-import { useState } from "react";
-
-function ScoreCounter({incrementScore}) {
-        console.log("Giurt");
-    }
+function ScoreCounter({score}) {
     return (
-        <div className="scoreCounter" >
+        <div className="scoreCounter">
             <p>Your score is <span>{score}</span></p>
         </div>
     )

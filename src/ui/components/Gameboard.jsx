@@ -11,6 +11,11 @@ function shuffleArray(array = ["Whitebeard", "Luffy", "Zoro", "Sanji", "Trafalga
   return shuffledArray;
 }
 
+const charClickedArr = [];
+for (let i = 0; i < 10; i++) {
+    charClickedArr.push(false);
+}
+
 function Gameboard() {
     const [ArrCharacters] = useState(() => shuffleArray()); 
     const [keys] = useState(() => {
@@ -20,6 +25,8 @@ function Gameboard() {
         }
         return keys;
     })
+    const [charClickedStatus, setCharClickedStatus] = useState(charClickedArr);
+    const [score, setScore] = useState(0);
 
     function shuffleCharactersDOM() {
         const gameboard = document.querySelector('.Gameboard');
@@ -33,25 +40,34 @@ function Gameboard() {
         cards.forEach(card => gameboard.appendChild(card));
     }
 
-
-    function handleImgClick(isClicked) {
-        if (isClicked == true) {
-            console.log("Wtf");
+    function handleImgClick(node) {
+        const index = parseInt(node.dataset.index);
+        if (charClickedStatus[index] == false) {
+            setCharClickedStatus((prev) => {
+                const newStatus = [...prev];
+                newStatus[index] = true;
+                return newStatus;
+            });
+            incrementScore(score);
+        } else {
+            setScore(0);
+            setCharClickedStatus(charClickedArr);
         }
         shuffleCharactersDOM();
     }
 
-    function incrementScore(cb) {
-        cb();
+    function incrementScore(score) {
+        setScore(score + 1);
     }
-
     
     return (
     <div className='Gameboard'>
-        {ArrCharacters.map((character, index) => (
-            <Character character={null} index={index} key={keys[index]} handleImgClick={handleImgClick}></Character>
-        ))}
-        <ScoreCounter key={0} incrementScore={incrementScore}></ScoreCounter>
+        <ScoreCounter key={0} score={score} setScore={incrementScore}></ScoreCounter>
+        <div className='CharactersDiv'>    
+            {ArrCharacters.map((character, index) => (
+                <Character character={null} index={index} key={keys[index]} handleImgClick={handleImgClick} ></Character>
+            ))}
+        </div>
     </div>
     )
 }

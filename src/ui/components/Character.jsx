@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 function Character({character, index, handleImgClick}) {
   const [src, setSrc] = useState(null);
-  const [isClicked, setIsClicked] = useState(false);
   useEffect(() => {
     if (character !== null) {
       console.log(character);
@@ -27,9 +26,11 @@ function Character({character, index, handleImgClick}) {
 
 
   return (
-      <div className='characterCard' onClick={function() {handleImgClick(isClicked)
-        setIsClicked(true);
-      }}>
+      <div className={`characterCard`} data-index={index} onClick={function(e) 
+        {
+          handleImgClick(e.target.closest("div"));
+        }
+      }>
         {src !== null ? <img src={src} alt="test" className={`Image-${index + 1}`} /> : null}
         <p>{index}</p>
       </div>
