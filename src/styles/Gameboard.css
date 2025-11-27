@@ -10,7 +10,21 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px;
+    gap: 24px;
+}
+
+.headerDiv {
+    text-align: center;
+}
+
+.headerDiv h1 { 
+    font-size: 3rem;
+    color: var(--color-tertiary);
+}
+
+.headerDiv p {
+    font-size: 2rem;
+    margin-top: 8px;
 }
 
 .characterCard {
@@ -18,7 +32,7 @@
     border: 1px solid var(--border);
     border-top: 1px solid var(--highlight);
     border-radius: 50%;
-    width: 300px;
+    width: 250px;
     padding: 30px;
     aspect-ratio: 1/1;
     display: flex;

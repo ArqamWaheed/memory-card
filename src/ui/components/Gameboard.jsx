@@ -27,9 +27,15 @@ function Gameboard() {
     })
     const [charClickedStatus, setCharClickedStatus] = useState(charClickedArr);
     const [score, setScore] = useState(0);
+    const [loadedCount, setLoadedCount] = useState(0);
+    const isLoading = loadedCount < 10;
+
+    function handleImageLoaded() {
+        setLoadedCount(prev => prev + 1);
+    }
 
     function shuffleCharactersDOM() {
-        const gameboard = document.querySelector('.Gameboard');
+        const gameboard = document.querySelector('.CharactersDiv');
         const cards = Array.from(gameboard.querySelectorAll('.characterCard'));
         
         for (let i = cards.length - 1; i > 0; i--) {
@@ -59,16 +65,29 @@ function Gameboard() {
     function incrementScore(score) {
         setScore(score + 1);
     }
-    
+
     return (
-    <div className='Gameboard'>
-        <ScoreCounter key={0} score={score} setScore={incrementScore}></ScoreCounter>
-        <div className='CharactersDiv'>    
-            {ArrCharacters.map((character, index) => (
-                <Character character={null} index={index} key={keys[index]} handleImgClick={handleImgClick} ></Character>
-            ))}
+        <div className='Gameboard'>
+            <div className="headerDiv">
+                <h1>Memory Card Game</h1>
+                <p>MAKE SURE TO NOT SELECT THE SAME CHARACTER TWICE!</p>
+            </div>
+            <ScoreCounter key={0} score={score} setScore={incrementScore}></ScoreCounter>
+            
+            {isLoading && <div className="loading">Loading characters... {loadedCount}/10</div>}
+            
+            <div className='CharactersDiv' style={{ display: isLoading ? 'none' : 'flex' }}>    
+                {ArrCharacters.map((character, index) => (
+                    <Character 
+                        character={character} 
+                        index={index} 
+                        key={keys[index]} 
+                        handleImgClick={handleImgClick}
+                        onImageLoaded={handleImageLoaded}
+                    />
+                ))}
+            </div>
         </div>
-    </div>
     )
 }
 

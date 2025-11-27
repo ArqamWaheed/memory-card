@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-function Character({character, index, handleImgClick}) {
+
+function Character({character, index, handleImgClick, onImageLoaded}) {
   const [src, setSrc] = useState(null);
+
   useEffect(() => {
     if (character !== null) {
       console.log(character);
@@ -15,15 +17,16 @@ function Character({character, index, handleImgClick}) {
         })
         .then((data) => {
           setSrc(data.data[0].images.original_still.url);
+          onImageLoaded(); 
         })
         .catch((error) => {
           console.error('Fetch error:', error);
         });
     } else {
       setSrc("https://fwmedia.fandomwire.com/wp-content/uploads/2025/07/24022421/Kaido.jpg");
+      onImageLoaded(); 
     }
   }, [character]);
-
 
   return (
       <div className={`characterCard`} data-index={index} onClick={function(e) 
@@ -32,7 +35,6 @@ function Character({character, index, handleImgClick}) {
         }
       }>
         {src !== null ? <img src={src} alt="test" className={`Image-${index + 1}`} /> : null}
-        <p>{index}</p>
       </div>
   )
 }
